@@ -127,65 +127,56 @@ var login = function login(req, res) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
+          _context2.prev = 0;
           _req$body2 = req.body, email = _req$body2.email, password = _req$body2.password;
 
-          if (email) {
-            _context2.next = 3;
+          if (!(!email || !password)) {
+            _context2.next = 4;
             break;
           }
 
           return _context2.abrupt("return", res.status(400).json({
-            message: 'Email is required'
+            success: false,
+            message: 'Email and password are required'
           }));
 
-        case 3:
-          if (password) {
-            _context2.next = 5;
-            break;
-          }
-
-          return _context2.abrupt("return", res.status(400).json({
-            message: 'Password is required'
-          }));
-
-        case 5:
-          _context2.prev = 5;
-          _context2.next = 8;
+        case 4:
+          _context2.next = 6;
           return regeneratorRuntime.awrap(_userModel["default"].findOne({
             email: email
           }));
 
-        case 8:
+        case 6:
           user = _context2.sent;
 
           if (user) {
-            _context2.next = 11;
+            _context2.next = 9;
             break;
           }
 
-          return _context2.abrupt("return", res.status(400).json({
+          return _context2.abrupt("return", res.status(404).json({
             success: false,
             message: 'User not found'
           }));
 
-        case 11:
-          _context2.next = 13;
+        case 9:
+          _context2.next = 11;
           return regeneratorRuntime.awrap(_bcryptjs["default"].compare(password, user.password));
 
-        case 13:
+        case 11:
           isMatch = _context2.sent;
 
           if (isMatch) {
-            _context2.next = 16;
+            _context2.next = 14;
             break;
           }
 
-          return _context2.abrupt("return", res.status(400).json({
+          return _context2.abrupt("return", res.status(401).json({
             success: false,
             message: 'Incorrect password'
           }));
 
-        case 16:
+        case 14:
           token = _jsonwebtoken["default"].sign({
             id: user._id
           }, process.env.JWT_SECRET, {
@@ -195,30 +186,28 @@ var login = function login(req, res) {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-            maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-
+            maxAge: 7 * 24 * 60 * 60 * 1000
           });
-          res.json({
+          return _context2.abrupt("return", res.json({
             success: true,
             message: 'Login successful'
-          });
-          _context2.next = 24;
-          break;
+          }));
 
-        case 21:
-          _context2.prev = 21;
-          _context2.t0 = _context2["catch"](5);
-          res.json({
+        case 19:
+          _context2.prev = 19;
+          _context2.t0 = _context2["catch"](0);
+          console.error(_context2.t0);
+          return _context2.abrupt("return", res.status(500).json({
             success: false,
-            message: _context2.t0.message
-          });
+            message: 'Server error'
+          }));
 
-        case 24:
+        case 23:
         case "end":
           return _context2.stop();
       }
     }
-  }, null, null, [[5, 21]]);
+  }, null, null, [[0, 19]]);
 };
 
 exports.login = login;

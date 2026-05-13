@@ -17,7 +17,7 @@ const allowedOrigins = [process.env.FRONTEND_URL];
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'https://authentication1-mern.netlify.app',
+    origin: allowedOrigins,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']

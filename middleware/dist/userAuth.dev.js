@@ -22,7 +22,7 @@ var userAuth = function userAuth(req, res, next) {
             break;
           }
 
-          return _context.abrupt("return", res.status(401).json({
+          return _context.abrupt("return", res.status(404).json({
             success: false,
             message: 'Token not found'
           }));
