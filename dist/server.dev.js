@@ -1,5 +1,10 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
 var _express = _interopRequireDefault(require("express"));
 
 var _cors = _interopRequireDefault(require("cors"));
@@ -34,6 +39,5 @@ app.get('/', function (req, res) {
 });
 app.use('/api/auth', _authRoutes["default"]);
 app.use('/api/user', _userRoutes["default"]);
-app.listen(port, function () {
-  console.log("Server is running on port ".concat(port));
-});
+var _default = app;
+exports["default"] = _default;
