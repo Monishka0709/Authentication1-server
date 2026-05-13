@@ -9,25 +9,28 @@ import userRouter from './views/userRoutes.js';
 
 const app = express();
 
-const port  = process.env.PORT || 4000;
+const port = process.env.PORT || 4000;
+
 connectDB();
 
 const allowedOrigins = process.env.FRONTEND_URL;
 
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
+
 app.use(cors({
     origin: allowedOrigins,
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    credentials: true
 }));
 
+app.options('*', cors());
 
 // API endpoints
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
+
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 
