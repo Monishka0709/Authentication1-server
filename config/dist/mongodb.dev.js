@@ -24,16 +24,15 @@ var connectDB = function connectDB() {
           return regeneratorRuntime.awrap(_mongoose["default"].connect("".concat(process.env.MONGODB_URI, "/authentication")));
 
         case 4:
-          _context.next = 10;
+          _context.next = 9;
           break;
 
         case 6:
           _context.prev = 6;
           _context.t0 = _context["catch"](0);
           console.error('MongoDB connection error:', _context.t0);
-          process.exit(1);
 
-        case 10:
+        case 9:
         case "end":
           return _context.stop();
       }

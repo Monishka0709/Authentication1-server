@@ -1,10 +1,5 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports["default"] = void 0;
-
 var _express = _interopRequireDefault(require("express"));
 
 var _cors = _interopRequireDefault(require("cors"));
@@ -24,20 +19,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var app = (0, _express["default"])();
 var port = process.env.PORT || 4000;
 (0, _mongodb["default"])();
-var allowedOrigins = process.env.FRONTEND_URL; // Middleware
-
+var allowedOrigins = [process.env.FRONTEND_URL];
 app.use(_express["default"].json());
 app.use((0, _cookieParser["default"])());
 app.use((0, _cors["default"])({
-  origin: allowedOrigins,
-  credentials: true
-}));
-app.options('*', (0, _cors["default"])()); // API endpoints
+  origin: 'https://authentication1-mern.netlify.app',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+})); // API endpoints
 
 app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 app.use('/api/auth', _authRoutes["default"]);
 app.use('/api/user', _userRoutes["default"]);
-var _default = app;
-exports["default"] = _default;
+app.listen(port, function () {
+  console.log("Server is running on port ".concat(port));
+});
