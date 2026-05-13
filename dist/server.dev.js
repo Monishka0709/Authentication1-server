@@ -19,12 +19,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var app = (0, _express["default"])();
 var port = process.env.PORT || 4000;
 (0, _mongodb["default"])();
-var allowedOrigins = [process.env.FRONTEND_URL];
+var allowedOrigins = process.env.FRONTEND_URL;
 app.use(_express["default"].json());
 app.use((0, _cookieParser["default"])());
 app.use((0, _cors["default"])({
   origin: allowedOrigins,
-  credentials: true
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 })); // API endpoints
 
 app.get('/', function (req, res) {
