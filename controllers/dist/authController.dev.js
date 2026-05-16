@@ -89,29 +89,29 @@ var register = function register(req, res) {
             subject: 'Welcome to our platform',
             text: "Hello ".concat(user.name, ",\n\nThank you for registering on our platform. We're excited to have you on board!\n\nBest regards,\nThe Team")
           };
-          _context.next = 20;
-          return regeneratorRuntime.awrap(new Promise(function (resolve, reject) {
-            _nodemailer["default"].sendMail(mailOptions, function (err, info) {
-              if (err) {
-                console.error(err);
-                reject(err);
-              } else {
-                resolve(info);
-              }
-            });
-          }));
 
-        case 20:
-          res.status(201).json({
-            success: true,
-            message: 'User registered successfully',
-            token: token
+          _nodemailer["default"].sendMail(mailOptions, function (err, info) {
+            if (err) {
+              console.error(err);
+              return res.status(500).json({
+                success: false,
+                message: 'Email failed to send'
+              });
+            }
+
+            console.log("Welcome email sent successfully");
+            res.status(201).json({
+              success: true,
+              message: 'User registered successfully',
+              token: token
+            });
           });
-          _context.next = 27;
+
+          _context.next = 25;
           break;
 
-        case 23:
-          _context.prev = 23;
+        case 21:
+          _context.prev = 21;
           _context.t0 = _context["catch"](3);
           console.log(_context.t0);
           res.json({
@@ -119,12 +119,12 @@ var register = function register(req, res) {
             message: _context.t0.message
           });
 
-        case 27:
+        case 25:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[3, 23]]);
+  }, null, null, [[3, 21]]);
 };
 
 exports.register = register;
@@ -297,37 +297,37 @@ var sendVerifyOtp = function sendVerifyOtp(req, res) {
 
           _nodemailer["default"].sendMail(mailOptions, function (err, success) {
             if (err) {
+              console.error(err);
               return res.status(500).send({
                 error: "Error Occured !",
                 message: err.message
               });
             } else {
+              console.log("success");
               return res.status(200).send({
                 error: "Success",
-                message: "Email hs been sent to your registered email"
+                message: "OTP sent to email"
               });
             }
           });
 
-          return _context4.abrupt("return", res.json({
-            success: true,
-            message: 'OTP sent to email'
-          }));
+          _context4.next = 19;
+          break;
 
-        case 17:
-          _context4.prev = 17;
+        case 16:
+          _context4.prev = 16;
           _context4.t0 = _context4["catch"](0);
           return _context4.abrupt("return", res.json({
             success: false,
             message: _context4.t0.message
           }));
 
-        case 20:
+        case 19:
         case "end":
           return _context4.stop();
       }
     }
-  }, null, null, [[0, 17]]);
+  }, null, null, [[0, 16]]);
 };
 
 exports.sendVerifyOtp = sendVerifyOtp;

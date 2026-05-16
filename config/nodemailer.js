@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
         pass: process.env.SMTP_KEY
     },
     tls: {
-    rejectUnauthorized: false 
+    rejectUnauthorized: false // only if you’re stuck with self-signed certs
   }
 });
 

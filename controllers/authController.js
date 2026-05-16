@@ -45,18 +45,15 @@ export const register = async(req,res) =>{
             text: `Hello ${user.name},\n\nThank you for registering on our platform. We're excited to have you on board!\n\nBest regards,\nThe Team`
         }
 
-        await new Promise((resolve, reject) => {
-            transporter.sendMail(mailOptions, (err, info) => {
-                if (err) {
-                    console.error(err);
-                    reject(err);
-                } else {
-                    resolve(info);
-                }
-            });
+        transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ success: false, message: 'Email failed to send' });
+            }
+            console.log("Welcome email sent successfully");
+            res.status(201).json({ success: true, message: 'User registered successfully', token });
         });
 
-        res.status(201).json({success: true, message: 'User registered successfully', token});
 
 
     }
@@ -143,20 +140,21 @@ export const sendVerifyOtp = async(req,res) => {
 
          transporter.sendMail(mailOptions, (err, success) => {
       if (err) {
+        console.error(err);
         return res.status(500).send({
           error: "Error Occured !",
           message: err.message,
         });
       } else {
+        console.log("success");
         return res.status(200).send({
           error: "Success",
-          message: "Email hs been sent to your registered email",
+          message: "OTP sent to email",
         });
       }
     });
 
 
-        return res.json({success: true, message:'OTP sent to email'});
 
     }
     catch(error){
