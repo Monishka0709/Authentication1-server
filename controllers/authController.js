@@ -45,7 +45,16 @@ export const register = async(req,res) =>{
             text: `Hello ${user.name},\n\nThank you for registering on our platform. We're excited to have you on board!\n\nBest regards,\nThe Team`
         }
 
-        await transporter.sendMail(mailOptions);
+        await new Promise((resolve, reject) => {
+            transporter.sendMail(mailOptions, (err, info) => {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                } else {
+                    resolve(info);
+                }
+            });
+        });
 
         res.status(201).json({success: true, message: 'User registered successfully', token});
 
@@ -132,7 +141,16 @@ export const sendVerifyOtp = async(req,res) => {
             html: EMAIL_VERIFY_TEMPLATE.replace('{{email}}', user.email).replace('{{otp}}', otp)
         }
 
-        await transporter.sendMail(mailOptions);
+        await new Promise((resolve, reject) => {
+            transporter.sendMail(mailOptions, (err, info) => {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                } else {
+                    resolve(info);
+                }
+            });
+        });
 
         return res.json({success: true, message:'OTP sent to email'});
 
