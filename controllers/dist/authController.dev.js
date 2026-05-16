@@ -90,7 +90,16 @@ var register = function register(req, res) {
             text: "Hello ".concat(user.name, ",\n\nThank you for registering on our platform. We're excited to have you on board!\n\nBest regards,\nThe Team")
           };
           _context.next = 20;
-          return regeneratorRuntime.awrap(_nodemailer["default"].sendMail(mailOptions));
+          return regeneratorRuntime.awrap(new Promise(function (resolve, reject) {
+            _nodemailer["default"].sendMail(mailOptions, function (err, info) {
+              if (err) {
+                console.error(err);
+                reject(err);
+              } else {
+                resolve(info);
+              }
+            });
+          }));
 
         case 20:
           res.status(201).json({
@@ -285,29 +294,40 @@ var sendVerifyOtp = function sendVerifyOtp(req, res) {
             subject: 'Your OTP for account verification',
             html: _emailTemplates.EMAIL_VERIFY_TEMPLATE.replace('{{email}}', user.email).replace('{{otp}}', otp)
           };
-          _context4.next = 15;
-          return regeneratorRuntime.awrap(_nodemailer["default"].sendMail(mailOptions));
 
-        case 15:
+          _nodemailer["default"].sendMail(mailOptions, function (err, success) {
+            if (err) {
+              return res.status(500).send({
+                error: "Error Occured !",
+                message: err.message
+              });
+            } else {
+              return res.status(200).send({
+                error: "Success",
+                message: "Email hs been sent to your registered email"
+              });
+            }
+          });
+
           return _context4.abrupt("return", res.json({
             success: true,
             message: 'OTP sent to email'
           }));
 
-        case 18:
-          _context4.prev = 18;
+        case 17:
+          _context4.prev = 17;
           _context4.t0 = _context4["catch"](0);
           return _context4.abrupt("return", res.json({
             success: false,
             message: _context4.t0.message
           }));
 
-        case 21:
+        case 20:
         case "end":
           return _context4.stop();
       }
     }
-  }, null, null, [[0, 18]]);
+  }, null, null, [[0, 17]]);
 };
 
 exports.sendVerifyOtp = sendVerifyOtp;

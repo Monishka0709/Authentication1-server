@@ -141,16 +141,20 @@ export const sendVerifyOtp = async(req,res) => {
             html: EMAIL_VERIFY_TEMPLATE.replace('{{email}}', user.email).replace('{{otp}}', otp)
         }
 
-        await new Promise((resolve, reject) => {
-            transporter.sendMail(mailOptions, (err, info) => {
-                if (err) {
-                    console.error(err);
-                    reject(err);
-                } else {
-                    resolve(info);
-                }
-            });
+         transporter.sendMail(mailOptions, (err, success) => {
+      if (err) {
+        return res.status(500).send({
+          error: "Error Occured !",
+          message: err.message,
         });
+      } else {
+        return res.status(200).send({
+          error: "Success",
+          message: "Email hs been sent to your registered email",
+        });
+      }
+    });
+
 
         return res.json({success: true, message:'OTP sent to email'});
 
