@@ -45,14 +45,28 @@ export const register = async(req,res) =>{
             text: `Hello ${user.name},\n\nThank you for registering on our platform. We're excited to have you on board!\n\nBest regards,\nThe Team`
         }
 
-        transporter.sendMail(mailOptions, (err, info) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ success: false, message: 'Email failed to send' });
-            }
-            console.log("Welcome email sent successfully");
-            res.status(201).json({ success: true, message: 'User registered successfully', token });
-        });
+        // transporter.sendMail(mailOptions, (err, info) => {
+        //     if (err) {
+        //         console.error(err);
+        //         return res.status(500).json({ success: false, message: 'Email failed to send' });
+        //     }
+        //     console.log("Welcome email sent successfully");
+        //     res.status(201).json({ success: true, message: 'User registered successfully', token });
+        // });
+
+        try {
+            const info = await transporter.sendMail({
+                from: process.env.SENDER_EMAIL,
+                to: email,
+                subject: "Test Mail",
+                text: "Hello"
+            });
+
+            console.log("MAIL SENT:", info);
+
+        } catch (error) {
+            console.log("MAIL ERROR:", error);
+        }
 
 
 
