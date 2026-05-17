@@ -55,12 +55,7 @@ export const register = async(req,res) =>{
         // });
 
         try {
-            const info = await transporter.sendMail({
-                from: process.env.SENDER_EMAIL,
-                to: email,
-                subject: "Test Mail",
-                text: "Hello"
-            });
+            const info = await transporter.sendMail(mailOptions);
 
             console.log("MAIL SENT:", info);
 
@@ -152,21 +147,14 @@ export const sendVerifyOtp = async(req,res) => {
             html: EMAIL_VERIFY_TEMPLATE.replace('{{email}}', user.email).replace('{{otp}}', otp)
         }
 
-         transporter.sendMail(mailOptions, (err, success) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send({
-          error: "Error Occured !",
-          message: err.message,
-        });
-      } else {
-        console.log("success");
-        return res.status(200).send({
-          error: "Success",
-          message: "OTP sent to email",
-        });
-      }
-    });
+        try {
+            const info = await transporter.sendMail(mailOptions);
+
+            console.log("MAIL SENT:", info);
+
+        } catch (error) {
+            console.log("MAIL ERROR:", error);
+        }
 
 
 
@@ -245,8 +233,14 @@ export const sendResetPasswordOtp = async(req,res) => {
             subject: 'Your OTP for password reset',
             html: PASSWORD_RESET_TEMPLATE.replace('{{email}}', user.email).replace('{{otp}}', otp)
         }
-        await transporter.sendMail(mailOptions);
-        return res.json({success: true, message:'OTP sent to email'});
+        try {
+            const info = await transporter.sendMail(mailOptions);
+
+            console.log("MAIL SENT:", info);
+
+        } catch (error) {
+            console.log("MAIL ERROR:", error);
+        }
     }
     catch(error){
         return res.json({success: false, message: error.message});

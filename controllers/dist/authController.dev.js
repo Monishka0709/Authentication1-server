@@ -99,12 +99,7 @@ var register = function register(req, res) {
 
           _context.prev = 18;
           _context.next = 21;
-          return regeneratorRuntime.awrap(_nodemailer["default"].sendMail({
-            from: process.env.SENDER_EMAIL,
-            to: email,
-            subject: "Test Mail",
-            text: "Hello"
-          }));
+          return regeneratorRuntime.awrap(_nodemailer["default"].sendMail(mailOptions));
 
         case 21:
           info = _context.sent;
@@ -267,7 +262,7 @@ var logout = function logout(req, res) {
 exports.logout = logout;
 
 var sendVerifyOtp = function sendVerifyOtp(req, res) {
-  var userId, user, otp, mailOptions;
+  var userId, user, otp, mailOptions, info;
   return regeneratorRuntime.async(function sendVerifyOtp$(_context4) {
     while (1) {
       switch (_context4.prev = _context4.next) {
@@ -305,40 +300,39 @@ var sendVerifyOtp = function sendVerifyOtp(req, res) {
             subject: 'Your OTP for account verification',
             html: _emailTemplates.EMAIL_VERIFY_TEMPLATE.replace('{{email}}', user.email).replace('{{otp}}', otp)
           };
-
-          _nodemailer["default"].sendMail(mailOptions, function (err, success) {
-            if (err) {
-              console.error(err);
-              return res.status(500).send({
-                error: "Error Occured !",
-                message: err.message
-              });
-            } else {
-              console.log("success");
-              return res.status(200).send({
-                error: "Success",
-                message: "OTP sent to email"
-              });
-            }
-          });
-
-          _context4.next = 19;
-          break;
+          _context4.prev = 13;
+          _context4.next = 16;
+          return regeneratorRuntime.awrap(_nodemailer["default"].sendMail(mailOptions));
 
         case 16:
-          _context4.prev = 16;
-          _context4.t0 = _context4["catch"](0);
+          info = _context4.sent;
+          console.log("MAIL SENT:", info);
+          _context4.next = 23;
+          break;
+
+        case 20:
+          _context4.prev = 20;
+          _context4.t0 = _context4["catch"](13);
+          console.log("MAIL ERROR:", _context4.t0);
+
+        case 23:
+          _context4.next = 28;
+          break;
+
+        case 25:
+          _context4.prev = 25;
+          _context4.t1 = _context4["catch"](0);
           return _context4.abrupt("return", res.json({
             success: false,
-            message: _context4.t0.message
+            message: _context4.t1.message
           }));
 
-        case 19:
+        case 28:
         case "end":
           return _context4.stop();
       }
     }
-  }, null, null, [[0, 16]]);
+  }, null, null, [[0, 25], [13, 20]]);
 };
 
 exports.sendVerifyOtp = sendVerifyOtp;
@@ -474,7 +468,7 @@ var isAuthenticated = function isAuthenticated(req, res) {
 exports.isAuthenticated = isAuthenticated;
 
 var sendResetPasswordOtp = function sendResetPasswordOtp(req, res) {
-  var email, user, otp, mailOptions;
+  var email, user, otp, mailOptions, info;
   return regeneratorRuntime.async(function sendResetPasswordOtp$(_context7) {
     while (1) {
       switch (_context7.prev = _context7.next) {
@@ -525,29 +519,39 @@ var sendResetPasswordOtp = function sendResetPasswordOtp(req, res) {
             subject: 'Your OTP for password reset',
             html: _emailTemplates.PASSWORD_RESET_TEMPLATE.replace('{{email}}', user.email).replace('{{otp}}', otp)
           };
-          _context7.next = 17;
+          _context7.prev = 15;
+          _context7.next = 18;
           return regeneratorRuntime.awrap(_nodemailer["default"].sendMail(mailOptions));
 
-        case 17:
-          return _context7.abrupt("return", res.json({
-            success: true,
-            message: 'OTP sent to email'
-          }));
+        case 18:
+          info = _context7.sent;
+          console.log("MAIL SENT:", info);
+          _context7.next = 25;
+          break;
 
-        case 20:
-          _context7.prev = 20;
-          _context7.t0 = _context7["catch"](0);
+        case 22:
+          _context7.prev = 22;
+          _context7.t0 = _context7["catch"](15);
+          console.log("MAIL ERROR:", _context7.t0);
+
+        case 25:
+          _context7.next = 30;
+          break;
+
+        case 27:
+          _context7.prev = 27;
+          _context7.t1 = _context7["catch"](0);
           return _context7.abrupt("return", res.json({
             success: false,
-            message: _context7.t0.message
+            message: _context7.t1.message
           }));
 
-        case 23:
+        case 30:
         case "end":
           return _context7.stop();
       }
     }
-  }, null, null, [[0, 20]]);
+  }, null, null, [[0, 27], [15, 22]]);
 };
 
 exports.sendResetPasswordOtp = sendResetPasswordOtp;
