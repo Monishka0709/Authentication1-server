@@ -18,7 +18,7 @@ var _emailTemplates = require("../config/emailTemplates.js");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var register = function register(req, res) {
-  var _req$body, name, email, password, existingUser, hashedPassword, user, token, mailOptions, info;
+  var _req$body, name, email, password, existingUser, hashedPassword, user, token, info;
 
   return regeneratorRuntime.async(function register$(_context) {
     while (1) {
@@ -82,13 +82,7 @@ var register = function register(req, res) {
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
 
           }); //Sending welcome email to the user
-
-          mailOptions = {
-            from: process.env.SENDER_EMAIL,
-            to: user.email,
-            subject: 'Welcome to our platform',
-            text: "Hello ".concat(user.name, ",\n\nThank you for registering on our platform. We're excited to have you on board!\n\nBest regards,\nThe Team")
-          }; // transporter.sendMail(mailOptions, (err, info) => {
+          // transporter.sendMail(mailOptions, (err, info) => {
           //     if (err) {
           //         console.error(err);
           //         return res.status(500).json({ success: false, message: 'Email failed to send' });
@@ -97,27 +91,32 @@ var register = function register(req, res) {
           //     res.status(201).json({ success: true, message: 'User registered successfully', token });
           // });
 
-          _context.prev = 18;
-          _context.next = 21;
-          return regeneratorRuntime.awrap(_nodemailer["default"].sendMail(mailOptions));
+          _context.prev = 17;
+          _context.next = 20;
+          return regeneratorRuntime.awrap(_nodemailer["default"].sendMail({
+            from: process.env.SENDER_EMAIL,
+            to: user.email,
+            subject: 'Welcome to our platform',
+            text: "Hello ".concat(user.name, ",\n\nThank you for registering on our platform. We're excited to have you on board!\n\nBest regards,\nThe Team")
+          }));
 
-        case 21:
+        case 20:
           info = _context.sent;
           console.log("MAIL SENT:", info);
-          _context.next = 28;
+          _context.next = 27;
           break;
 
-        case 25:
-          _context.prev = 25;
-          _context.t0 = _context["catch"](18);
+        case 24:
+          _context.prev = 24;
+          _context.t0 = _context["catch"](17);
           console.log("MAIL ERROR:", _context.t0);
 
-        case 28:
-          _context.next = 34;
+        case 27:
+          _context.next = 33;
           break;
 
-        case 30:
-          _context.prev = 30;
+        case 29:
+          _context.prev = 29;
           _context.t1 = _context["catch"](3);
           console.log(_context.t1);
           res.json({
@@ -125,12 +124,12 @@ var register = function register(req, res) {
             message: _context.t1.message
           });
 
-        case 34:
+        case 33:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[3, 30], [18, 25]]);
+  }, null, null, [[3, 29], [17, 24]]);
 };
 
 exports.register = register;

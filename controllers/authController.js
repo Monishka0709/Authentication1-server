@@ -38,12 +38,7 @@ export const register = async(req,res) =>{
 
 
         //Sending welcome email to the user
-        const mailOptions = {
-            from: process.env.SENDER_EMAIL,
-            to: user.email,
-            subject: 'Welcome to our platform',
-            text: `Hello ${user.name},\n\nThank you for registering on our platform. We're excited to have you on board!\n\nBest regards,\nThe Team`
-        }
+        
 
         // transporter.sendMail(mailOptions, (err, info) => {
         //     if (err) {
@@ -55,7 +50,12 @@ export const register = async(req,res) =>{
         // });
 
         try {
-            const info = await transporter.sendMail(mailOptions);
+            const info = await transporter.sendMail({
+            from: process.env.SENDER_EMAIL,
+            to: user.email,
+            subject: 'Welcome to our platform',
+            text: `Hello ${user.name},\n\nThank you for registering on our platform. We're excited to have you on board!\n\nBest regards,\nThe Team`
+        });
 
             console.log("MAIL SENT:", info);
 
