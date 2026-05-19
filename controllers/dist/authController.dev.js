@@ -97,7 +97,7 @@ var register = function register(req, res) {
             from: process.env.SENDER_EMAIL,
             to: user.email,
             subject: 'Welcome to our platform',
-            text: "Hello ".concat(user.name, ",\n\nThank you for registering on our platform. We're excited to have you on board!\n\nBest regards,\nThe Team")
+            text: "Hello ".concat(user.name || name || 'there', ",\n\nThank you for registering on our platform. We're excited to have you on board!\n\nBest regards,\nThe Team")
           }));
 
         case 20:

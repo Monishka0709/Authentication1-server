@@ -10,8 +10,8 @@ var _nodemailer = _interopRequireDefault(require("nodemailer"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var transporter = _nodemailer["default"].createTransport({
-  host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT,
+  host: "smtp-relay.brevo.com",
+  port: 587,
   secure: false,
   auth: {
     user: process.env.SMTP_USER,
