@@ -97,26 +97,29 @@ var register = function register(req, res) {
             from: process.env.SENDER_EMAIL,
             to: user.email,
             subject: 'Welcome to our platform',
-            text: "Hello ".concat(user.name || name || 'there', ",\n\nThank you for registering on our platform. We're excited to have you on board!\n\nBest regards,\nThe Team")
+            text: "Hello ".concat(user.name, ",\n\nThank you for registering on our platform. We're excited to have you on board!\n\nBest regards,\nThe Team")
           }));
 
         case 20:
           info = _context.sent;
           console.log("MAIL SENT:", info);
-          _context.next = 27;
-          break;
+          return _context.abrupt("return", res.status(201).json({
+            success: true,
+            message: 'User registered successfully',
+            token: token
+          }));
 
-        case 24:
-          _context.prev = 24;
+        case 25:
+          _context.prev = 25;
           _context.t0 = _context["catch"](17);
           console.log("MAIL ERROR:", _context.t0);
 
-        case 27:
-          _context.next = 33;
+        case 28:
+          _context.next = 34;
           break;
 
-        case 29:
-          _context.prev = 29;
+        case 30:
+          _context.prev = 30;
           _context.t1 = _context["catch"](3);
           console.log(_context.t1);
           res.json({
@@ -124,12 +127,12 @@ var register = function register(req, res) {
             message: _context.t1.message
           });
 
-        case 33:
+        case 34:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[3, 29], [17, 24]]);
+  }, null, null, [[3, 30], [17, 25]]);
 };
 
 exports.register = register;
@@ -306,32 +309,34 @@ var sendVerifyOtp = function sendVerifyOtp(req, res) {
         case 16:
           info = _context4.sent;
           console.log("MAIL SENT:", info);
-          _context4.next = 23;
-          break;
+          return _context4.abrupt("return", res.json({
+            success: true,
+            message: 'OTP sent successfully'
+          }));
 
-        case 20:
-          _context4.prev = 20;
+        case 21:
+          _context4.prev = 21;
           _context4.t0 = _context4["catch"](13);
           console.log("MAIL ERROR:", _context4.t0);
 
-        case 23:
-          _context4.next = 28;
+        case 24:
+          _context4.next = 29;
           break;
 
-        case 25:
-          _context4.prev = 25;
+        case 26:
+          _context4.prev = 26;
           _context4.t1 = _context4["catch"](0);
           return _context4.abrupt("return", res.json({
             success: false,
             message: _context4.t1.message
           }));
 
-        case 28:
+        case 29:
         case "end":
           return _context4.stop();
       }
     }
-  }, null, null, [[0, 25], [13, 20]]);
+  }, null, null, [[0, 26], [13, 21]]);
 };
 
 exports.sendVerifyOtp = sendVerifyOtp;

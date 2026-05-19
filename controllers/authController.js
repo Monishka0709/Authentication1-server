@@ -54,10 +54,15 @@ export const register = async(req,res) =>{
             from: process.env.SENDER_EMAIL,
             to: user.email,
             subject: 'Welcome to our platform',
-            text: `Hello ${user.name || name || 'there'},\n\nThank you for registering on our platform. We're excited to have you on board!\n\nBest regards,\nThe Team`
+            text: `Hello ${user.name},\n\nThank you for registering on our platform. We're excited to have you on board!\n\nBest regards,\nThe Team`
         });
 
             console.log("MAIL SENT:", info);
+            return res.status(201).json({
+    success: true,
+    message: 'User registered successfully',
+    token
+});
 
         } catch (error) {
             console.log("MAIL ERROR:", error);
@@ -151,6 +156,10 @@ export const sendVerifyOtp = async(req,res) => {
             const info = await transporter.sendMail(mailOptions);
 
             console.log("MAIL SENT:", info);
+            return res.json({
+    success: true,
+    message: 'OTP sent successfully'
+});
 
         } catch (error) {
             console.log("MAIL ERROR:", error);
